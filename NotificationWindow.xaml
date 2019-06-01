@@ -1,0 +1,15 @@
+﻿<Window x:Class="ClipboardAccelerator.NotificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClipboardAccelerator"
+        mc:Ignorable="d"
+        Title="NotificationWindow" Height="130" Width="130" WindowStyle="None" ShowInTaskbar="False" ResizeMode="NoResize" Topmost="True" IsTabStop="False" MouseEnter="Window_MouseEnter" Background="#FFD38282">
+    <Grid Margin="10" MouseLeftButtonDown="DragWindow">
+        <TextBlock x:Name="tBMessage" TextWrapping="Wrap" FontSize="16" FontWeight="Bold" TextAlignment="Center" Text="Move cursor here to show Clipboard Accelerator" Margin="0,8,0,-8"/>
+        <Button x:Name="bDone" Content="Done" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Width="90" Visibility="Hidden" Click="bDone_Click"/>
+
+
+    </Grid>
+</Window>
