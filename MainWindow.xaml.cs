@@ -123,7 +123,7 @@ namespace ClipboardAccelerator
 
                     if(p.MainModule.FileName == path)
                     {
-                        MessageBox.Show("Clipboard Accelerator is already running: " + Environment.NewLine + p.MainModule.FileName + " ID: " + p.Id.ToString(), "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                        MessageBox.Show($"Clipboard Accelerator is already running: {Environment.NewLine}{p.MainModule.FileName} ID: {p.Id.ToString()}", "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
 
                         // Source: http://stackoverflow.com/questions/7146080/closing-applications
                         System.Environment.Exit(1);
