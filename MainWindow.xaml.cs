@@ -736,7 +736,7 @@ namespace ClipboardAccelerator
 
         private void buttonAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Clipboard Accelerator v. " + Assembly.GetExecutingAssembly().GetName().Version.ToString() + Environment.NewLine + "2017-08-19 C. Paul", "About", MessageBoxButton.OK ,MessageBoxImage.Information);
+            MessageBox.Show($"Clipboard Accelerator v. {Assembly.GetExecutingAssembly().GetName().Version.ToString()}{Environment.NewLine}https://www.gnu.org/licenses/gpl-3.0.txt {Environment.NewLine}2016 - 2019, C. Paul", "About", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
 
