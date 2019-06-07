@@ -1,0 +1,25 @@
+<ExternalProgram>
+
+<!--
+XML escape characters: http://stackoverflow.com/questions/1091945/what-characters-do-i-need-to-escape-in-xml-documents
+"   &quot;
+'   &apos;
+<   &lt;
+>   &gt;
+&   &amp;
+
+<staticarg> definition: 
+%%ca** = string from the clipboard content window
+%%oa** = string from the optional arguments box
+-->
+
+    <program id="1">
+        <class>RDP_Example</class>
+        <description>No description</description> 
+	<issafe>true</issafe>
+        <executable>mstsc.exe</executable>
+        <path>C:\windows\system32</path>
+	<staticarg>/v:%%ca**</staticarg>
+    </program>
+
+</ExternalProgram>

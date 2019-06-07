@@ -1,0 +1,25 @@
+<ExternalProgram>
+
+<!--
+XML escape characters: http://stackoverflow.com/questions/1091945/what-characters-do-i-need-to-escape-in-xml-documents
+"   &quot;
+'   &apos;
+<   &lt;
+>   &gt;
+&   &amp;
+
+<staticarg> definition: 
+%%ca** = string from the clipboard content window
+%%oa** = string from the optional arguments box
+-->
+
+    <program id="1">
+        <class>template_class_name which is used for match against regex</class>
+        <description>template_description</description> 
+	<issafe>true or false - to suppress execution warning message</issafe>
+        <executable>The program to execute, e.g. mstsc.exe</executable>
+        <path>The path to the program to execute, e.g. C:\windows\system32</path>
+	<staticarg>The static argument string and the parameters %%ca** %%oa** as described above</staticarg>
+    </program>
+
+</ExternalProgram>
