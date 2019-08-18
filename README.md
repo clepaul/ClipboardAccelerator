@@ -23,3 +23,6 @@ Clipboard Accelerator eliminates some of the above steps. In the best case you a
 If you have multiple computers you want to ping, just use a list of computer names (each line must contain one single computer name) and uncheck the "execute first line only" option before double clicking the "ping" command. This will ping all computers at once.
 
 The above example can be applied to many command line or even GUI tools which accept parameters. It hides some of the hassle with the parameters of the different tools since they can be pre-configured statically and in a list of pre-defined optional arguments.
+
+### Known bugs ###
+1. In some rare situations the tool prevents other programs to access the clipboard. This behavior was observed with MS Excel. In such a situation Excel shows a message that accessing the clipboard was not possible. A second try to copy the data to the clipboard worked in all cases. There is a setting in the tool called "Clipboard access delay in milliseconds" to minimize the likelyhood of this issue.
