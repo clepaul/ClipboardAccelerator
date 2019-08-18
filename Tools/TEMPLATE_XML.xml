@@ -9,8 +9,9 @@ XML escape characters: http://stackoverflow.com/questions/1091945/what-character
 &   &amp;
 
 <staticarg> definition: 
-%%ca** = string from the clipboard content window
-%%oa** = string from the optional arguments box
+%%ca** = placeholder string which will be replaced with the string from the clipboard content window
+%%oa** = placeholder string which will be replaced with the string from the optional arguments box
+%%pn** = placeholder string which will be replaced with the pipe name
 -->
 
     <program id="1">
