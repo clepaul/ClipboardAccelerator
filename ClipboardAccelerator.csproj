@@ -172,6 +172,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Tools\BAT_Example.bat" />
+    <None Include="Tools\BAT_RDP_Example.bat" />
+    <None Include="Tools\PS1_Example.ps1" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -194,8 +197,10 @@
   <ItemGroup>
     <Resource Include="ca.ico" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Tools\" />
+    <Resource Include="Tools\TEMPLATE_XML.xml" />
+    <Resource Include="Tools\XML_RDP_Example.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
