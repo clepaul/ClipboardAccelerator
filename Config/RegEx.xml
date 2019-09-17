@@ -1,0 +1,18 @@
+<RegExConfig>
+
+    <RegEx id="1">
+        <class>Computer</class>
+        <regexstring>^(\w{6}-\w{1,2}\d{4,6})$</regexstring>       
+    </RegEx>
+
+    <RegEx id="2">
+        <class>Computer</class>
+        <regexstring>^((2[0-5]{2}|1\d{2}|\d{1,2})(\.(2[0-5]{2}|1\d{2}|\d{1,2})){3})$</regexstring>       
+    </RegEx>
+
+    <RegEx id="3">
+        <class>file</class>
+        <regexstring>^(\w:\\(\w+\\)*\w*\.?\w{0,10})$</regexstring>       
+    </RegEx>
+
+</RegExConfig>
