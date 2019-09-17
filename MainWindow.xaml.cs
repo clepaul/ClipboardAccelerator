@@ -863,7 +863,7 @@ namespace ClipboardAccelerator
             // Refresh RegEx XML file Re-Populate the RegExItems list with the RegExp config
             if (GetRegExConfig() != 0)
             {
-                MessageBox.Show("Failed to refresh the RegExs from the XML file.");
+                MessageBox.Show("Failed to refresh the regular expressions from the XML config file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Logger.WriteLog("Failed to refresh the RegExs from the XML file.");
                 return;
             }
@@ -926,8 +926,8 @@ namespace ClipboardAccelerator
             }
             catch (Exception ex)
             {
-                MessageBox.Show(@"XML file """ + sRegExXmlFile + @""" contains invalid data." + Environment.NewLine + "Error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Logger.WriteLog(@"XML file """ + sRegExXmlFile + @""" contains invalid data." + Environment.NewLine + "Error: " + ex.Message);
+                MessageBox.Show(@"XML configuration file for regular expressions """ + sRegExXmlFile + @""" contains invalid data or it does not exist." + Environment.NewLine + Environment.NewLine + "Error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Logger.WriteLog(@"XML file """ + sRegExXmlFile + @""" contains invalid data or it does not exist." + Environment.NewLine + "Error: " + ex.Message);
 
                 return 1;
             }
