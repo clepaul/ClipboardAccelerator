@@ -28,9 +28,16 @@ The above example can be applied to many command line or even GUI tools which ac
 1. In some rare situations the tool prevents other programs to access the clipboard. This behavior was observed with MS Excel. In such a situation Excel shows a message that accessing the clipboard was not possible. A second try to copy the data to the clipboard worked in all cases. There is a setting in the tool called "Clipboard access delay in milliseconds" to minimize the likelyhood of this issue.
 2. The highlighting of the external commands is not working properly (currently highlighted commands are still highlighted even though the regular expression does not match) when manually editing the text in the clipboard textbox.
 
+### Planned improvements, enhancements (request for help)
+- Un-sphaghetti the code and make it more readable
+- Make the code more OOP
+- Move the majority of logic from the main window class/function to didicated classes
+- Move the processing of non-GUI logic to dedicated threads
+
 ### Notes and requirements ###
 - .NET runtime version 4.5.2 is required
 - Using special characters like "| > < &" etc. at the command line for starting an external program may cause unpredicted behavior
+- If the "pipe option" is not in use external commands are called multiple times, once for each line in the clipboard text window
 
 
 ### License / Warranty
