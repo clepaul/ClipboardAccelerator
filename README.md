@@ -37,7 +37,8 @@ The above example can be applied to many command line or even GUI tools which ac
 ### Notes and requirements ###
 - .NET runtime version 4.5.2 is required.
 - Using special characters like "| > < &" etc. at the command line for starting an external program may cause unpredicted behavior.
-- If the "pipe option" is not in use external commands are called multiple times. Each line in the clipboard text / free text textbox will be added as a parameter to a new call to the external command.
+- If the "pipe option" is not in use external commands are called multiple times. Each line in the clipboard text / free text textbox will be added as a parameter to a new call of the external command.
+- Since the tool copies all text from the clipboard it might also copy sensitive data (e.g. passwords).
 
 
 ### License / Warranty
