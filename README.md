@@ -26,3 +26,13 @@ The above example can be applied to many command line or even GUI tools which ac
 
 ### Known bugs ###
 1. In some rare situations the tool prevents other programs to access the clipboard. This behavior was observed with MS Excel. In such a situation Excel shows a message that accessing the clipboard was not possible. A second try to copy the data to the clipboard worked in all cases. There is a setting in the tool called "Clipboard access delay in milliseconds" to minimize the likelyhood of this issue.
+2. The highlighting of the external commands is not working properly (currently highlighted commands are still highlighted even though the regular expression does not match) when manually editing the text in the clipboard textbox.
+
+### Notes and requirements ###
+- .NET runtime version 4.5.2 is required
+- Using special characters like "| > < &" etc. at the command line for starting an external program may cause unpredicted behavior
+
+
+### License / Warranty
+https://www.gnu.org/licenses/gpl-3.0.txt
+
