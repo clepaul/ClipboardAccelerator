@@ -24,7 +24,7 @@ If you have multiple computers you want to ping, just use a list of computer nam
 
 The above example can be applied to many command line or even GUI tools which accept parameters. It hides some of the hassle with the parameters of the different tools since they can be pre-configured statically and in a list of pre-defined optional arguments.
 
-There is another documentation: [a relative link](/docs/Clipboard Accelerator.docx)
+There is another documentation: [a link](docs/Clipboard Accelerator.docx)
 
 ### Known bugs ###
 1. In some rare situations the tool prevents other programs to access the clipboard. This behavior was observed with MS Excel. In such a situation Excel shows a message that accessing the clipboard was not possible. A second try to copy the data to the clipboard worked in all cases. There is a setting in the tool called "Clipboard access delay in milliseconds" to minimize the likelyhood of this issue.
