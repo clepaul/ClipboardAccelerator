@@ -22,7 +22,7 @@ To ping a computer the following steps are usually required:
 Clipboard Accelerator eliminates some of the above steps. In the best case you already have the computer name you want to ping  somewhere (e.g. in an email / chat) and you can copy it to the clipboard. With Clipboard Accelerator you can use the computer name from the clipboard and double click the "ping" command from the list of commands. This will execute the "ping" command with the computer name as parameter.\
 If you have multiple computers you want to ping, just use a list of computer names (each line must contain one single computer name) and uncheck the "execute first line only" option before double clicking the "ping" command. This will ping all computers at once.
 
-The above example can be applied to many command line or even GUI tools which accept parameters. It hides some of the hassle with the parameters of the different tools since they can be pre-configured statically and in a list of pre-defined optional arguments.\
+The above example can be applied to many command line or even GUI tools which accept parameters. It hides some of the hassle with the parameters of the different tools since they can be pre-configured statically and in a list of pre-defined optional arguments.
 
 There is another documentation: 
 
