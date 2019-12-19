@@ -99,6 +99,11 @@
     </ApplicationDefinition>
     <Compile Include="ClipboardEntry.cs" />
     <Compile Include="ClipboardHook.cs" />
+    <Compile Include="StartupNotificationWindow.xaml.cs">
+      <DependentUpon>StartupNotificationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WinProgMessageHandler.cs" />
+    <Compile Include="IsAlreadyRunning.cs" />
     <Compile Include="FileItem.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="RegExpConf.cs" />
@@ -135,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StartupNotificationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

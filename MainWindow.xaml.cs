@@ -75,8 +75,12 @@ namespace ClipboardAccelerator
         bool bTestingCloseFlag = false;
 
 
-        // TODO: Initialize all settings ( Properties.Settings.Default.* ) with its default values
-        
+        /*
+         * TODO: Initialize all settings ( Properties.Settings.Default.* ) with its default values
+         * Implement logic to upgrade properties: https://stackoverflow.com/questions/982354/where-are-the-properties-settings-default-stored
+         * Properties.Settings.Default.Upgrade(), etc.
+         */
+
 
 
         public MainWindow()
@@ -90,63 +94,27 @@ namespace ClipboardAccelerator
             GetRegExConfig();
 
             // Remove Clipboard hook when main windows / application is closing
-            // Source: http://stackoverflow.com/questions/3683450/handling-the-window-closing-event-with-wpf-mvvm-light-toolkit
-            //Closing += ClipboardHook.OnWindowClosing;
+            // Source: http://stackoverflow.com/questions/3683450/handling-the-window-closing-event-with-wpf-mvvm-light-toolkit            
             Closing += MainWindow_Closing;
-
-            MessageBoxResult result = MessageBox.Show("This version of Clipboard Accelerator is for testing purposes only. Executing external commands can harm your computer and data.\n\nUse at your own risk.\n\nDo not distribute this version.\n\nClick \"Yes\" to agree, \"No\" to close Clipboard Accelerator.", "Clipboard Accelerator", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.No)
-            {
-                bTestingCloseFlag = true;
-                this.Close();
-            }
-            
         }
 
-
-        void CheckIfAlreadyRunning()
-        {
-            int OwnProcessID = Process.GetCurrentProcess().Id;
-            Process[] Processes = Process.GetProcesses();
-
-            // Source: http://stackoverflow.com/questions/52797/how-do-i-get-the-path-of-the-assembly-the-code-is-in
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            string path = Uri.UnescapeDataString(uri.Path.Replace("/", "\\"));
-            Logger.WriteLog("Own instance: " + path + " Own process ID: " + OwnProcessID);
-            
-            foreach (Process p in Processes)
-            {
-                try
-                {
-                    if (p.Id == OwnProcessID) continue;
-
-                    if(p.MainModule.FileName == path)
-                    {
-                        MessageBox.Show($"Clipboard Accelerator is already running: {Environment.NewLine}{p.MainModule.FileName} ID: {p.Id.ToString()}", "Note", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-
-                        // Source: http://stackoverflow.com/questions/7146080/closing-applications
-                        System.Environment.Exit(1);
-                    }                    
-                }
-                catch(Exception) { }
-            }
-        }
 
 
         void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if(!bTestingCloseFlag)
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to close Clipboard Accelerator?", "Clipboard Accelerator", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to close Clipboard Accelerator?",
+                                                          "Clipboard Accelerator",
+                                                          MessageBoxButton.YesNo,
+                                                          MessageBoxImage.Question);
                 if (result == MessageBoxResult.No)
                 {
                     e.Cancel = true;                    
                     return;
                 }
-            }            
-
-            ClipboardHook.OnWindowClosing();            
+            }
+            ClipboardHook.OnWindowClosing();
         }
 
 
@@ -155,17 +123,30 @@ namespace ClipboardAccelerator
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-                       
-            var hwndSource = PresentationSource.FromVisual(this) as HwndSource;
-            if (hwndSource != null)
-            {
-                hwndSource.AddHook(WndProc);
-            }
 
+            
+            HwndSource hwndSource = PresentationSource.FromVisual(this) as HwndSource;            
+            if (hwndSource != null)
+            {                
+                hwndSource.AddHook(WndProc);
+                // Remove if the below is activated again
+                // Install the Clipboard notification hook  
+                ClipboardHook.InstallHook(hwndSource.Handle);
+            }
+            else
+            {
+                MessageBox.Show("Failed to add clipboard hook. The program will not be able to catch clipboard updates.",
+                                                          "Clipboard Accelerator",
+                                                          MessageBoxButton.OK,
+                                                          MessageBoxImage.Warning);
+            }            
+
+            /* Re-activate if the above "InstallHook()" is removed
             // Install the Clipboard notification hook  
             HwndSource hwndSourceHandle = PresentationSource.FromVisual(this) as HwndSource;
             ClipboardHook.InstallHook(hwndSourceHandle.Handle);
-
+            */
+            
 
             // Create the actual instance of the Clipboard timer
             // Source: http://stackoverflow.com/questions/12535722/what-is-the-best-way-to-implement-a-timer
@@ -182,163 +163,23 @@ namespace ClipboardAccelerator
                 listBoxCommands.FontSize = 22 * 1.33333333;
             }
 
+            
+            if (Properties.Settings.Default.ShowStartupWindow)
+            {
+                // Init the splash screen message
+                StartupNotificationWindow startupWindow = new StartupNotificationWindow();
+                
+                startupWindow.ShowDialog();
+                if (startupWindow.DialogResult == false)
+                {
+                    bTestingCloseFlag = true;
+                    this.Close();
+                }                
+            }            
+
             Logger.WriteLog("Program started.");
         }
 
-
-        // Handle the WinProg messages
-        // NOTE: removed "static" from method "WinProc" to make GUI update "tbClipboardContent.Text = ..." work
-        // Source: https://pingfu.net/csharp/2015/04/22/receive-wndproc-messages-in-wpf.html
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            if(msg == WM_CLIPBOARDUPDATE)
-            {
-                if (cBIgnoreCBUpdate.IsChecked.Value) { return IntPtr.Zero; };
-                
-
-                try
-                {
-                    // Get Data from Clipboard
-                    // Source: http://www.fluxbytes.com/csharp/how-to-monitor-for-clipboard-changes-using-addclipboardformatlistener/
-                    IDataObject iData = Clipboard.GetDataObject();      // Clipboard's data.
-
-                    // Todo: Send picture data in clipboard directly to mspaint
-                    //if (iData.GetDataPresent(DataFormats.Bitmap)) { MessageBox.Show("Bitmap on clipboard");  }
-
-                    if (iData.GetDataPresent(DataFormats.Text))
-                    {
-                        // Only copy the data from the clipboard if the timer is NOT running. E.g. to prevent multiple clipboard updates by applications like Excel which push the same data in multiple formats to the clipboard
-                        if (ClipboardTimer.Enabled == false)
-                        {
-                            // Make sure the clipboard access delay is between 0 and 10 seconds
-                            // TODO: document delay is between 0 and 10 seconds & recommended = 0.5 seconds
-                            if(Properties.Settings.Default.dClipboardDelay >= 0 && Properties.Settings.Default.dClipboardDelay < 10001)
-                            {
-                                ClipboardTimer.Interval = Properties.Settings.Default.dClipboardDelay;
-                            }
-                            else
-                            {
-                                // Default clipboard delay is 0.5 seconds
-                                ClipboardTimer.Interval = 500;                                
-                            }
-                            
-                            ClipboardTimer.AutoReset = false;
-                            ClipboardTimer.Enabled = true;
-
-                            // Todo: Setup logic to set user defined limit of CB lenth
-                            StringBuilder text = new StringBuilder();
-                            int iCBTextLenth = 0;
-
-                            text.Append(iData.GetData(DataFormats.Text));
-
-                           
-                            // TODO: Make sure that the (int) cast below does not introduce a bug, e.g. uiClipDisplaySize could be to big to fit into a regular "int"
-                            // INT check done in "SettingsWindow.xaml.cs" - TODO: change uint to int so that it is not possible to change in the config file manually
-                            if (text.Length > Properties.Settings.Default.uiClipDisplaySize) iCBTextLenth = (int)Properties.Settings.Default.uiClipDisplaySize;
-                            else iCBTextLenth = text.Length;
-
-                            
-                            // Combine clipboards if checkbox is checked
-                            // Todo: Enable clipboard history functionality <-- check if this makes sense
-                            if (cBCombineClipboard.IsChecked.Value)
-                            {
-                                if(tbClipboardContent.LineCount == 1)
-                                {
-                                    if(tbClipboardContent.GetLineLength(0) == 0)
-                                    {
-                                        tbClipboardContent.AppendText(text.ToString(0, iCBTextLenth));
-                                    }
-                                    else
-                                    {
-                                        tbClipboardContent.AppendText(Environment.NewLine + text.ToString(0, iCBTextLenth));
-                                    }
-                                }
-                                else
-                                {
-                                    tbClipboardContent.AppendText(Environment.NewLine + text.ToString(0, iCBTextLenth));
-                                }                                
-                            }
-                            else
-                            {
-                                // Compare the captured clipboard to the recent clipboard to prevent multiple clipboards with the same data
-                                if (lClipboardList.Count > 0)
-                                {
-                                    if (text.Equals(lClipboardList[lClipboardList.Count - 1].GetCBTextAsStringBuilder()))
-                                    {
-					Logger.WriteLog("Ignoring clipboard update because the current clipboard data is identical to the last saved one.");
-                                        return IntPtr.Zero;
-                                    }
-                                }
-
-
-                                tbClipboardContent.Text = text.ToString(0, iCBTextLenth);
-
-
-                                lClipboardList.Add(new ClipboardEntry(text));
-                                ClipboardEntry.CBInView = lClipboardList.Count - 1;
-
-                                if (lClipboardList.Count > 1) { bPrev.IsEnabled = true; }
-                                bNext.IsEnabled = false;
-                                bDeleteClipboardEntry.IsEnabled = true;
-
-               
-				// Set the clipboard information (time of capture and number of visible clipboard) of the clipboard which was just captured
-                                SetCBInfoString();
-
-
-                                Logger.WriteLog("Captured clipboard: " + lClipboardList.Count.ToString());
-
-
-                                // Hide the clipboard window if checkbox is checked
-                                if (cBHideClipboard.IsChecked.Value) bShowClipboard.Visibility = Visibility.Visible;
-
-
-                                // Add text in comboOptArg to the list of comboOptArg and clear the text
-                                if (comboOptArg.Text != "")
-                                {
-                                    bool bInList = false;
-                                    foreach (var item in comboOptArg.Items)
-                                    {
-                                        if (item.ToString() == comboOptArg.Text) bInList = true;
-                                    }
-
-                                    if (!bInList)
-                                    {
-                                        comboOptArg.Items.Add(comboOptArg.Text);
-                                    }
-                                    comboOptArg.Text = "";
-                                }                                
-                            }
-                            
-
-                            // Show the clipboard changed notification window
-                            // Source: http://stackoverflow.com/questions/7373335/how-to-open-a-child-windows-under-parent-window-on-menu-item-click-in-wpf
-                            if (NotificationWindow.bIsFirstWindow == true && cBShowNW.IsChecked.Value)
-                            {
-                                NotificationWindow nw = new NotificationWindow();
-                                nw.ShowInTaskbar = false;
-				nw.Left = Properties.Settings.Default.dXNotifyWindow; // Todo: Check this value - make sure it is in a valid range. E.g. 0 -> max screen size
-                                nw.Top = Properties.Settings.Default.dYNotifyWindow; // Todo: Check this value - make sure it is in a valid range. E.g. 0 -> max screen size
-                                nw.Topmost = true;
-                                nw.Owner = Application.Current.MainWindow;
-                                nw.Show();
-                            }
-                        }
-                        // Clipboard timer is running -> no data will be copied from clipboard
-                        else
-                        {
-                            Logger.WriteLog("Ignoring clipboard update because of the clipboard access delay (see Advanced Settings for details).");
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Logger.WriteLog("Failed to get data from Clipboard. Error: " + e.Message);
-                    return IntPtr.Zero;
-                }
-            }
-            return IntPtr.Zero;
-        }
 
 
         // Log / Debug window
@@ -736,7 +577,10 @@ namespace ClipboardAccelerator
 
         private void buttonAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"Clipboard Accelerator v. {Assembly.GetExecutingAssembly().GetName().Version.ToString()} {Environment.NewLine}2016 - 2019, C. Paul {Environment.NewLine}{Environment.NewLine}License: https://www.gnu.org/licenses/gpl-3.0.txt {Environment.NewLine}", "About", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Clipboard Accelerator v. {Assembly.GetExecutingAssembly().GetName().Version.ToString()} {Environment.NewLine}2016 - 2019, C. Paul {Environment.NewLine}{Environment.NewLine}License: https://www.gnu.org/licenses/gpl-3.0.txt {Environment.NewLine}",
+                            "About",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
         }
 
 
@@ -960,7 +804,7 @@ namespace ClipboardAccelerator
 
 
        
-        // Set the MaxWith property of the left column to the size of the window minus the size required by the components in the right column
+        // Set the MaxWidth property of the left column to the size of the window minus the size required by the components in the right column
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // 456 is the size required by the groupbox plus the buttons on the right to the groupbox

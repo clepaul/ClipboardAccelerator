@@ -52,6 +52,7 @@ namespace ClipboardAccelerator
             DispatcherTimer timer = new DispatcherTimer();
 
             // TODO: document recommended notification window time = 3 seconds
+            // TODO: make sure ther is a valid value in the uiNotificationWNDDelay setting
             timer.Interval = TimeSpan.FromMilliseconds(Properties.Settings.Default.uiNotificationWNDDelay);
             timer.Tick += TimerTick;
             timer.Start();
@@ -106,7 +107,7 @@ namespace ClipboardAccelerator
             //Owner.Show();
             //Owner.BringIntoView();
 
-            // // Activate and show (if minimized) the main CA window
+            // Activate and show (if minimized) the main CA window
             // Source: http://blog.binarybits.net/programming/bringing-window-to-front-in-wpf/
 
             if (!Owner.IsVisible)
@@ -115,6 +116,7 @@ namespace ClipboardAccelerator
             }
             Owner.WindowState = WindowState.Normal;
             //Owner.Activate();
+            // ... Most likely the below is required. More testing required.
             Owner.Topmost = true;
             Owner.Topmost = false;
             //Owner.Focus();
