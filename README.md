@@ -44,8 +44,9 @@ A more detailed documentation (Clipboard Accelerator.docx) can be found in the d
 - Since the tool copies all text from the clipboard it might also copy sensitive data (e.g. passwords).
 
 ### Installation instructions
-Copy the ZIP file (see releases) ...
-
+1. Extract the ZIP file (see releases) to your prefered location
+2. Edit the template files in the "tools" directory to make them point to your utilities
+3. Optional: Edit the "regex.xml" file in the "Config" directory to enable command highlighting
 
 
 ### License / Warranty
