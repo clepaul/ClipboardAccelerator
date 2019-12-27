@@ -37,6 +37,7 @@ A more detailed documentation (Clipboard Accelerator.docx) can be found in the d
 - Move the majority of logic from the main window class/function to didicated classes.
 - Move the processing of non-GUI logic to dedicated threads.
 - Port to Linux / other operating systems
+- Make an installer
 - See "Projects" -> "Planned Enhancements"
 
 ### Notes and requirements
