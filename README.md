@@ -46,7 +46,9 @@ A more detailed documentation (Clipboard Accelerator.docx) can be found in the d
 ### Installation instructions
 1. Extract the ZIP file (see releases) to your prefered location
 2. Edit the template files in the "tools" directory to make them point to your utilities
-3. Optional: Edit the "regex.xml" file in the "Config" directory to enable command highlighting
+3. Optional: Edit the "regex.xml" file in the "config" directory to enable command highlighting
+4. Optional: Add "ClipboardAccelerator.exe" to the startup folder
+4. Start "ClipboardAccelerator.exe"
 
 
 ### License / Warranty
