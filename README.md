@@ -27,9 +27,9 @@ The above example can be applied to many command line or even GUI tools which ac
 A more detailed documentation (Clipboard Accelerator.docx) can be found in the docs directory.
 
 ### Known bugs
-1. In some rare situations the tool prevents other programs to access the clipboard. This behavior was observed with MS Excel. In such a situation Excel shows a message that accessing the clipboard was not possible. A second try to copy the data to the clipboard worked in all cases. There is a setting in the tool called "Clipboard access delay in milliseconds" to minimize the likelyhood of this issue.
-2. The highlighting of the external commands is not working properly (currently highlighted commands are still highlighted even though the regular expression does not match) when manually editing the text in the clipboard textbox.
-X. See "Issues"
+- In some rare situations the tool prevents other programs to access the clipboard. This behavior was observed with MS Excel. In such a situation Excel shows a message that accessing the clipboard was not possible. A second try to copy the data to the clipboard worked in all cases. There is a setting in the tool called "Clipboard access delay in milliseconds" to minimize the likelyhood of this issue.
+- The highlighting of the external commands is not working properly (currently highlighted commands are still highlighted even though the regular expression does not match) when manually editing the text in the clipboard textbox.
+- See "Issues"
 
 ### Planned improvements, enhancements (request for help)
 - Un-sphaghetti the code and make it more readable.
