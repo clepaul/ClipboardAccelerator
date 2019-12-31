@@ -24,7 +24,7 @@
       <Value Profile="(Default)">22</Value>
     </Setting>
     <Setting Name="bHideFromTaskbarOnMinimize" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="dXNotifyWindow" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>

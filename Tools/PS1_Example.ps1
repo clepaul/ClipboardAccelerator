@@ -3,7 +3,7 @@
 param (
     # The below variable will contain the text that was on the clipboard
     [string]$Clipboardstring,
-    # The below variable will contain the text representing the optional argument
+    # The below variable will contain the text representing the optional argument (currently only supported when called using an XML file)
     [string]$OptArg
  )
 
