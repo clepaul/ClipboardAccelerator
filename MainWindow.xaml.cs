@@ -1,5 +1,5 @@
 ﻿/* Clipboard Accelerator - Executes commands with data from the clipboard
-Copyright (C) 2016 - 2019  Clemens Paul
+Copyright (C) 2016 - 2020  Clemens Paul
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -217,6 +217,9 @@ namespace ClipboardAccelerator
 
             // Do nothing if clipboard window is empty
             if (tbClipboardContent.Text == "") { return; }
+
+            // DeBug
+            //MessageBox.Show(tbClipboardContent.LineCount.ToString());
 
 
             // Split the content in the clipboard window into seperate strings, delimiter = new line. Remove lines with no text.
@@ -474,18 +477,12 @@ namespace ClipboardAccelerator
         // Update the information about which clipboard is shown and when it was captured
         private void SetCBInfoString()
         {
-            string sInfoString = "";
-
-
             if (ClipboardEntry.CBInView >= 0)
             {
-                sInfoString = "Showing clipboard " + (ClipboardEntry.CBInView + 1).ToString() + " of " + lClipboardList.Count.ToString();
-            }            
+                tBCBInfoLine.Text = "Clipboard " + (ClipboardEntry.CBInView + 1).ToString() + " of " + lClipboardList.Count.ToString() + ", lines: " + tbClipboardContent.LineCount.ToString();
+            }
             
-            string sInfoTimeString = ClipboardEntry.CBInView > -1 ? lClipboardList[ClipboardEntry.CBInView].sCBTime : "";
-
-            tBCBInfoLine.Text = sInfoString;
-            tBCBInfoTime.Text = sInfoTimeString;
+            tBCBInfoTime.Text = ClipboardEntry.CBInView > -1 ? lClipboardList[ClipboardEntry.CBInView].sCBTime : "";
         }
         
 
@@ -577,7 +574,7 @@ namespace ClipboardAccelerator
 
         private void buttonAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"Clipboard Accelerator v. {Assembly.GetExecutingAssembly().GetName().Version.ToString()} {Environment.NewLine}2016 - 2019, C. Paul {Environment.NewLine}{Environment.NewLine}License: https://www.gnu.org/licenses/gpl-3.0.txt {Environment.NewLine}",
+            MessageBox.Show($"Clipboard Accelerator v. {Assembly.GetExecutingAssembly().GetName().Version.ToString()} {Environment.NewLine}2016 - 2020, C. Paul {Environment.NewLine}{Environment.NewLine}License: https://www.gnu.org/licenses/gpl-3.0.txt {Environment.NewLine}",
                             "About",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
@@ -930,16 +927,18 @@ namespace ClipboardAccelerator
             {                
                 case WindowState.Minimized:
                     if(Properties.Settings.Default.bHideFromTaskbarOnMinimize)
-                    {
-                        // Make sure the tool can not be hidden if "cBIgnoreCBUpdate" is checked or "cBShowNW" is unchecked
-                        if (cBIgnoreCBUpdate.IsChecked.Value || !cBShowNW.IsChecked.Value)
-                        {
-                            MessageBox.Show(@"Clipboard Accelerator can't hide if the ""Ignore clipboard update"" option is set or if the ""Show notification window..."" option is disabled.", "Note", MessageBoxButton.OK, MessageBoxImage.Information);
-                            return;
-                        }
-                        this.Hide();
+                    {                        
+                        this.ShowInTaskbar = false;
+                        // If the below Hide is used, the window is not only hidden from taskbar but also from the ALT+TAB list
+                        //this.Hide();
                     }
-                    break;               
+                    break;
+
+                case WindowState.Normal:
+                case WindowState.Maximized:
+                    // Show the window in the taskbar after it has been restored or maximized
+                    this.ShowInTaskbar = true;
+                    break;
             }
         }
 
