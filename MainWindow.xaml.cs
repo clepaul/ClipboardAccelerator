@@ -473,19 +473,25 @@ namespace ClipboardAccelerator
             listBoxCommands.ItemsSource = FileItems;            
         }
 
-
+        
         // Update the information about which clipboard is shown and when it was captured
         private void SetCBInfoString()
         {
+            // This empty string is required, see below
+            string sInfoString = "";
+
             if (ClipboardEntry.CBInView >= 0)
             {
-                tBCBInfoLine.Text = "Clipboard " + (ClipboardEntry.CBInView + 1).ToString() + " of " + lClipboardList.Count.ToString() + ", lines: " + tbClipboardContent.LineCount.ToString();
+                sInfoString = "Clipboard " + (ClipboardEntry.CBInView + 1).ToString() + " of " + lClipboardList.Count.ToString() + ", lines: " + tbClipboardContent.LineCount.ToString();
             }
-            
-            tBCBInfoTime.Text = ClipboardEntry.CBInView > -1 ? lClipboardList[ClipboardEntry.CBInView].sCBTime : "";
-        }
-        
 
+            tBCBInfoTime.Text = ClipboardEntry.CBInView > -1 ? lClipboardList[ClipboardEntry.CBInView].sCBTime : "";
+
+            // Since this method is called by the "delete" button method as well the below either sets the TextBlock with the information about the clipboard
+            // or it clears the textbox using the empty string defined above
+            tBCBInfoLine.Text = sInfoString;            
+        }
+           
 
         // Pupulate or update the "FileItems" list with the details of the files and the XML content
         private int GetTools()
@@ -622,9 +628,8 @@ namespace ClipboardAccelerator
                 bPrev.IsEnabled = false;
             }
            
-            // -- test
-            SetCBInfoString();
-            // -- test       
+            // This call clears the clipboard (logic to be checked...)
+            SetCBInfoString();     
         }
 
 
