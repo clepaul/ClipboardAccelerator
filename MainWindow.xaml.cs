@@ -280,15 +280,24 @@ namespace ClipboardAccelerator
 
         private void RunXmlCommand(ref string[] saLinesToExecute, XMLRecord xrec)
         {
-            // Check if more than N lines and show a warning message           
+            // Check if more than N lines and show a warning message
+            // Todo: fix bug: prevent the below waring message if "run first line only" is checked
             if (tbClipboardContent.LineCount >= Properties.Settings.Default.uiExecutionWarningCount)
             {
                 MessageBoxResult result = MessageBox.Show("You are about to execute the selected command " + tbClipboardContent.LineCount.ToString() + " times." + Environment.NewLine + Environment.NewLine + "Click Yes to continue.", "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.No) { return; }
-            }
-           
+            }           
 
-            Logger.WriteLog("Data from XML file: \nPath: " + xrec.Path + "\nExecutable: " + xrec.Executable + "\nClass: " + xrec.Class + "\nDescription: " + xrec.Description + "\nStaticArguments: " + xrec.AllArguments);          
+            Logger.WriteLog("Data from XML file: \nPath: " + xrec.Path + "\nExecutable: " + xrec.Executable + "\nClass: " + xrec.Class + "\nDescription: " + xrec.Description + "\nStaticArguments: " + xrec.AllArguments);
+
+            // TODO: change the below logic to inform the user that "isdll" and "usepipe" cant be both true at the same time
+            // e.g. handle this in the XMLRecord class to prevent both set to true
+            if (xrec.IsDll == "true" && xrec.UsePipe == "true")
+            {
+                MessageBox.Show("The isdll and usepipe properties in the XML file cant be both true at the same time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
 
             if (xrec.UsePipe == "true")
             {       
@@ -317,7 +326,7 @@ namespace ClipboardAccelerator
                         if (result == MessageBoxResult.No) { return; }
                     }
                 }
-
+                                               
 
                 // Start the pipe server thread
                 Logger.WriteLog("Staring pipe server thread. Pipe name: " + sPipeName);
@@ -335,13 +344,42 @@ namespace ClipboardAccelerator
                 StartExternalProgram(startInfo);
                    
 
-                // Re-enable the "Execute first line only" checkbox
-                //if (cbEnableFirstLineOnly.IsChecked.Value) { cBFirstLineOnly.IsChecked = true; }
+                // Re-enable the "Execute first line only" checkbox                
                 if (Properties.Settings.Default.bEnableFirstLineOnly) { cBFirstLineOnly.IsChecked = true; }
 
             }
             else
             {
+                // Check if a DLL should be called instead of an executable
+                if (xrec.IsDll == "true")
+                {
+                    // Delete                    
+                    //MessageBox.Show("Path to DLL: " + xrec.Path + @"\" + xrec.Executable + "\r\nDllNameSpaceName.DllClassname: " + xrec.DllNamespaceName + "." + xrec.DllClassName + "\r\nDllMethodName: " + xrec.DllMethodName, "", MessageBoxButton.OK);
+                    Logger.WriteLog("DLL loaded: " + xrec.Path + @"\" + xrec.Executable + "\r\nDllNameSpaceName.DllClassname: " + xrec.DllNamespaceName + "." + xrec.DllClassName + "\r\nDllMethodName: " + xrec.DllMethodName);
+
+                    try
+                    {
+                        // Source: https://stackoverflow.com/questions/18362368/loading-dlls-at-runtime-in-c-sharp
+                        var DLL = Assembly.LoadFile(xrec.Path + @"\" + xrec.Executable);
+
+                        var theType = DLL.GetType(xrec.DllNamespaceName + "." + xrec.DllClassName);
+                        var c = Activator.CreateInstance(theType);
+                        var method = theType.GetMethod(xrec.DllMethodName);
+                        method.Invoke(c, new object[] { saLinesToExecute, xrec.DllConfigFilePath });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to load DLL: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Logger.WriteLog("Failed to load DLL: " + ex.Message);
+                    }
+
+                    // Re-enable the "Execute first line only" checkbox                    
+                    if (Properties.Settings.Default.bEnableFirstLineOnly) { cBFirstLineOnly.IsChecked = true; }
+
+                    return;
+                }
+
+
                 foreach (string sClipboardLine in saLinesToExecute)
                 {
                     if (xrec.CommandIsSafe != "true")
@@ -351,7 +389,7 @@ namespace ClipboardAccelerator
                             MessageBoxResult result = MessageBox.Show("Do you want to run the external command with the following parameter:" + Environment.NewLine + Environment.NewLine + sClipboardLine, "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
                             if (result == MessageBoxResult.No) { return; }
                         }
-                    }
+                    }                    
 
                     string sAllArguments = "";                       
 
@@ -373,8 +411,7 @@ namespace ClipboardAccelerator
                     StartExternalProgram(startInfo);
 
 
-                    // Re-enable the "Execute first line only" checkbox
-                    //if (cbEnableFirstLineOnly.IsChecked.Value) { cBFirstLineOnly.IsChecked = true; }
+                    // Re-enable the "Execute first line only" checkbox                    
                     if (Properties.Settings.Default.bEnableFirstLineOnly) { cBFirstLineOnly.IsChecked = true; }
                 }
             }

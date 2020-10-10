@@ -54,7 +54,7 @@
 
         </ListBox>
 
-        <TextBox x:Name="tbClipboardContent" Margin="10,211,10,38" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" FontSize="14.667" TextChanged="tbClipboardContent_TextChanged" Grid.Column="1"/>
+        <TextBox x:Name="tbClipboardContent" Margin="10,211,10,38" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" FontSize="18" TextChanged="tbClipboardContent_TextChanged" FontFamily="Consolas" Grid.Column="1"/>
         <ComboBox x:Name="comboOptArg" Grid.Column="1" Margin="10,0,10,10" IsEditable="True" Height="22" VerticalAlignment="Bottom" ToolTip="Optional Arguments (supported only by XML files)"/>
 
         <Button x:Name="buttonRun" Content="Log" Margin="320,48,0,0" Click="buttonRun_Click" HorizontalAlignment="Left" Width="51" VerticalAlignment="Top" Grid.Column="1" />

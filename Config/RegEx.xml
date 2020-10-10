@@ -11,8 +11,8 @@
     </RegEx>
 
     <RegEx id="3">
-        <class>file</class>
-        <regexstring>^(\w:\\(\w+\\)*\w*\.?\w{0,10})$</regexstring>       
+        <class>File</class>
+        <regexstring>^\s*([a-zA-Z]:|\\)(\\[^&lt;&gt;:"\/\\|?*]*)+\s*$</regexstring>       
     </RegEx>
 
 </RegExConfig>

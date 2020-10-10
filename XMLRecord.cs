@@ -31,9 +31,18 @@ namespace ClipboardAccelerator
         public string ProgramID { get; private set; }
         public string CommandIsSafe { get; private set; }
         public string UsePipe { get; private set; }
+        // TODO: document the following four XML parameters
+        public string IsDll { get; private set; }        
+        public string DllNamespaceName { get; private set; }
+        public string DllClassName { get; private set; }
+        public string DllMethodName { get; private set; }
+        public string DllConfigFilePath { get; private set; }
+        // TODO: Create a public string var containing the path to the xml file using the below "sXmlPath" variable.
+        //  This can be used later in the call to the DLL to get further configurations for the DLL functionality
+
 
         // enable the below and add function to get the data
-        public string Visible { get; private set; }
+        public string Visible { get; private set; }        
         public int RecordCount { get; private set; }
 
 
@@ -77,6 +86,11 @@ namespace ClipboardAccelerator
                     CommandIsSafe = el.Element("issafe") != null ? el.Element("issafe").Value : "false";
                     UsePipe = el.Element("usepipe") != null ? el.Element("usepipe").Value : "false";
                     Visible = el.Element("visible") != null ? el.Element("visible").Value : "true";
+                    IsDll = el.Element("isdll") != null ? el.Element("isdll").Value : "false";
+                    DllNamespaceName = el.Element("DllNamespaceName") != null ? el.Element("DllNamespaceName").Value : "";
+                    DllClassName = el.Element("DllClassName") != null ? el.Element("DllClassName").Value : "";
+                    DllMethodName = el.Element("DllMethodName") != null ? el.Element("DllMethodName").Value : "";
+                    DllConfigFilePath = el.Element("DllConfigFilePath") != null ? el.Element("DllConfigFilePath").Value : "";
                     ProgramID = el.Attribute("id") != null ? el.Attribute("id").Value : "Invalid <program> element";
 
                     
