@@ -46,12 +46,7 @@ namespace ClipboardAccelerator
         private const string ClipboardArgumentString = "%%ca**";
         private const string OptionalArgumentString = "%%oa**";
         private const string PipeNameString = "%%pn**";
-        /* OLD:
-        ClipboardArgumentString = "%%**";
-        OptionalArgumentString = "$$**";
-        PipeNameString = "$$pn**";
-        */
-
+        
 
         // Sent when the contents of the clipboard is updated
         private const int WM_CLIPBOARDUPDATE = 0x031D;

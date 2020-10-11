@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <GridSplitter Grid.Column="0" Width="3"/>
 
-        <ListBox x:Name="listBoxCommands" HorizontalContentAlignment="Stretch" Margin="10,10,8,10" FontSize="21.333" MouseDoubleClick="listBoxCommands_MouseDoubleClick" Initialized="listBoxCommands_Initialized" Background="White" Grid.Column="0" ScrollViewer.CanContentScroll="True" BorderThickness="1" FontWeight="Bold" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+        <ListBox x:Name="listBoxCommands" HorizontalContentAlignment="Stretch" Margin="10,10,8,10" FontSize="21.333" MouseDoubleClick="listBoxCommands_MouseDoubleClick" Initialized="listBoxCommands_Initialized" Background="White" Grid.Column="0" ScrollViewer.CanContentScroll="True" BorderThickness="1" FontWeight="Bold" FontFamily="Consolas" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,2">
