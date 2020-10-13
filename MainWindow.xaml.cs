@@ -294,6 +294,23 @@ namespace ClipboardAccelerator
             }
 
 
+            // TODO: change the below logic to inform the user that "ShellExecute" and "usepipe" cant be both true at the same time
+            // e.g. handle this in the XMLRecord class to prevent both set to true
+            if (xrec.ShellExecute == "true" && xrec.UsePipe == "true")
+            {
+                MessageBox.Show("The ShellExecute and usepipe properties in the XML file cant be both true at the same time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // TODO: change the below logic to inform the user that "ShellExecute" and "IsDll" cant be both true at the same time
+            // e.g. handle this in the XMLRecord class to prevent both set to true
+            if (xrec.ShellExecute == "true" && xrec.IsDll == "true")
+            {
+                MessageBox.Show("The ShellExecute and IsDll properties in the XML file cant be both true at the same time.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+
             if (xrec.UsePipe == "true")
             {       
                 string sAllArguments = "";
@@ -370,6 +387,39 @@ namespace ClipboardAccelerator
 
                     // Re-enable the "Execute first line only" checkbox                    
                     if (Properties.Settings.Default.bEnableFirstLineOnly) { cBFirstLineOnly.IsChecked = true; }
+
+                    return;
+                }
+
+
+                // Check if the shell should handle the execution of the command
+                if (xrec.ShellExecute == "true")
+                {
+                    foreach (string sClipboardLine in saLinesToExecute)
+                    {
+                        Logger.WriteLog("Preparing ShellExecute for: " + sClipboardLine);
+
+                        try
+                        {
+                            string sAllArguments = "";
+
+                            // Place the main argument into the arguments string
+                            // Todo: Add this logic (and similar ones) to the XMLRecord class
+                            sAllArguments = xrec.AllArguments.Replace(ClipboardArgumentString, sClipboardLine);
+
+                            // Use the shell / default handler to run the process
+                            // Todo: Inform user that this might be dangerous                            
+                            System.Diagnostics.Process.Start(sAllArguments);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("ShellExecute failed: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            Logger.WriteLog("ShellExecute failed: " + ex.Message);
+                        }
+
+                        // Re-enable the "Execute first line only" checkbox                    
+                        if (Properties.Settings.Default.bEnableFirstLineOnly) { cBFirstLineOnly.IsChecked = true; }
+                    }
 
                     return;
                 }

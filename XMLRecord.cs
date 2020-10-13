@@ -32,6 +32,7 @@ namespace ClipboardAccelerator
         public string CommandIsSafe { get; private set; }
         public string UsePipe { get; private set; }
         // TODO: document the following four XML parameters
+        public string ShellExecute { get; private set; }
         public string IsDll { get; private set; }        
         public string DllNamespaceName { get; private set; }
         public string DllClassName { get; private set; }
@@ -87,6 +88,7 @@ namespace ClipboardAccelerator
                     UsePipe = el.Element("usepipe") != null ? el.Element("usepipe").Value : "false";
                     Visible = el.Element("visible") != null ? el.Element("visible").Value : "true";
                     IsDll = el.Element("isdll") != null ? el.Element("isdll").Value : "false";
+                    ShellExecute = el.Element("ShellExecute") != null ? el.Element("ShellExecute").Value : "false";
                     DllNamespaceName = el.Element("DllNamespaceName") != null ? el.Element("DllNamespaceName").Value : "";
                     DllClassName = el.Element("DllClassName") != null ? el.Element("DllClassName").Value : "";
                     DllMethodName = el.Element("DllMethodName") != null ? el.Element("DllMethodName").Value : "";
