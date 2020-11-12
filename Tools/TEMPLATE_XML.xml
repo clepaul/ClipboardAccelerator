@@ -21,6 +21,10 @@ XML escape characters: http://stackoverflow.com/questions/1091945/what-character
         <executable>The program to execute, e.g. mstsc.exe</executable>
         <path>The path to the program to execute, e.g. C:\windows\system32</path>
 	<staticarg>The static argument string and the parameters %%ca** %%oa** as described above</staticarg>
+
+-dll
+-shellexecute
+
     </program>
 
 </ExternalProgram>

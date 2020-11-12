@@ -213,10 +213,6 @@ namespace ClipboardAccelerator
             // Do nothing if clipboard window is empty
             if (tbClipboardContent.Text == "") { return; }
 
-            // DeBug
-            //MessageBox.Show(tbClipboardContent.LineCount.ToString());
-
-
             // Split the content in the clipboard window into seperate strings, delimiter = new line. Remove lines with no text.
             string[] saClipboardLines = tbClipboardContent.Text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                         
@@ -236,7 +232,14 @@ namespace ClipboardAccelerator
                     }
                     else
                     {
-                        RunXmlCommand(ref saClipboardLines, xrec);
+                        // Check if more than N lines and show a warning message                        
+                        if (tbClipboardContent.LineCount >= Properties.Settings.Default.uiExecutionWarningCount)
+                        {
+                            MessageBoxResult result = MessageBox.Show("You are about to execute the selected command " + tbClipboardContent.LineCount.ToString() + " times." + Environment.NewLine + Environment.NewLine + "Click Yes to continue.", "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            if (result == MessageBoxResult.No) { return; }
+                        }
+                        
+                        RunXmlCommand(ref saClipboardLines, xrec);                                                
                     }                                                            
                     break;
 
@@ -275,14 +278,6 @@ namespace ClipboardAccelerator
 
         private void RunXmlCommand(ref string[] saLinesToExecute, XMLRecord xrec)
         {
-            // Check if more than N lines and show a warning message
-            // Todo: fix bug: prevent the below waring message if "run first line only" is checked
-            if (tbClipboardContent.LineCount >= Properties.Settings.Default.uiExecutionWarningCount)
-            {
-                MessageBoxResult result = MessageBox.Show("You are about to execute the selected command " + tbClipboardContent.LineCount.ToString() + " times." + Environment.NewLine + Environment.NewLine + "Click Yes to continue.", "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.No) { return; }
-            }           
-
             Logger.WriteLog("Data from XML file: \nPath: " + xrec.Path + "\nExecutable: " + xrec.Executable + "\nClass: " + xrec.Class + "\nDescription: " + xrec.Description + "\nStaticArguments: " + xrec.AllArguments);
 
             // TODO: change the below logic to inform the user that "isdll" and "usepipe" cant be both true at the same time
