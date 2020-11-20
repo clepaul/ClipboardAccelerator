@@ -1,5 +1,23 @@
 <ExternalProgram>
 
+    <program id="1">
+        <class>template_class_name which is used for match against regex</class>
+        <description>template_description</description> 
+	<issafe>true or false - to suppress execution warning message</issafe>
+        <executable>The program to execute, e.g. mstsc.exe</executable>
+        <path>The path to the program to execute, e.g. C:\windows\system32</path>
+	<staticarg>The static argument string and the parameters %%ca** %%oa** as described above</staticarg>
+	<Isdll>true or false - If this is true, a .NET DLL can be loaded / run instead of an external command</Isdll>
+	<DllNamespaceName>The name of the namespace in the DLL which contains the Class and the DLL entry method</DllNamespaceName>
+	<DllClassName>The class name which contains the DLL entry method</DllClassName>
+	<DllMethodName>The method name to call from the ClipboardAccelerator tool</DllMethodName>
+	<DllConfigFilePath>Path to a configuration file for the DLL (optional)</DllConfigFilePath>
+	<ShellExecute>true or false - If this is true, the string in the staticarg parameter is executed using the shells default handler. E.g. a URL is opened by the default browser.</ShellExecute>
+    </program>
+
+</ExternalProgram>
+
+
 <!--
 XML escape characters: http://stackoverflow.com/questions/1091945/what-characters-do-i-need-to-escape-in-xml-documents
 "   &quot;
@@ -13,18 +31,3 @@ XML escape characters: http://stackoverflow.com/questions/1091945/what-character
 %%oa** = placeholder string which will be replaced with the string from the optional arguments box
 %%pn** = placeholder string which will be replaced with the pipe name
 -->
-
-    <program id="1">
-        <class>template_class_name which is used for match against regex</class>
-        <description>template_description</description> 
-	<issafe>true or false - to suppress execution warning message</issafe>
-        <executable>The program to execute, e.g. mstsc.exe</executable>
-        <path>The path to the program to execute, e.g. C:\windows\system32</path>
-	<staticarg>The static argument string and the parameters %%ca** %%oa** as described above</staticarg>
-
--dll
--shellexecute
-
-    </program>
-
-</ExternalProgram>
