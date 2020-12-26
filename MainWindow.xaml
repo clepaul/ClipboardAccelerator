@@ -14,9 +14,15 @@
         </Grid.ColumnDefinitions>
         <GridSplitter Grid.Column="0" Width="3"/>
 
-        <ListBox x:Name="listBoxCommands" HorizontalContentAlignment="Stretch" Margin="10,10,8,10" FontSize="21.333" MouseDoubleClick="listBoxCommands_MouseDoubleClick" Initialized="listBoxCommands_Initialized" Background="White" Grid.Column="0" ScrollViewer.CanContentScroll="True" BorderThickness="1" FontWeight="Bold" FontFamily="Consolas" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+        <ListBox x:Name="listBoxCommands" HorizontalContentAlignment="Stretch" Margin="10,10,8,10" FontSize="21.333" Initialized="listBoxCommands_Initialized" Background="White" Grid.Column="0" ScrollViewer.CanContentScroll="True" BorderThickness="1" FontWeight="Bold" FontFamily="Consolas" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <!-- ItemContainerStyle is required to set the DoubleClick EventSetter for a single listbox item instead of setting it for the whole listbox -->
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="listBoxCommands_MouseDoubleClick"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate>                    
                     <Grid Margin="0,2">
                         <Grid.Background>
                             <SolidColorBrush Color="{Binding ItemBackgroundColor}"/>
