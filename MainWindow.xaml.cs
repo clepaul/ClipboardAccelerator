@@ -323,6 +323,9 @@ namespace ClipboardAccelerator
 
 
                 // Get user approval to run the external command
+                if(GetExecutionApproval(ref xrec) == false) { return; };
+                
+                /* To delete
                 if (xrec.CommandIsSafe != "true")
                 {
                     if (cBNotifyExecution.IsChecked.Value)
@@ -332,7 +335,7 @@ namespace ClipboardAccelerator
                         // + saLinesToExecute[0] + Environment.NewLine + "[+ following lines in the clipboard window]"
                         if (result == MessageBoxResult.No) { return; }
                     }
-                }
+                } */
                                                
 
                 // Start the pipe server thread
@@ -360,9 +363,10 @@ namespace ClipboardAccelerator
                 // Check if a DLL should be called instead of an executable
                 if (xrec.IsDll == "true")
                 {
-                    // Delete                    
-                    //MessageBox.Show("Path to DLL: " + xrec.Path + @"\" + xrec.Executable + "\r\nDllNameSpaceName.DllClassname: " + xrec.DllNamespaceName + "." + xrec.DllClassName + "\r\nDllMethodName: " + xrec.DllMethodName, "", MessageBoxButton.OK);
-                    Logger.WriteLog("DLL loaded: " + xrec.Path + @"\" + xrec.Executable + "\r\nDllNameSpaceName.DllClassname: " + xrec.DllNamespaceName + "." + xrec.DllClassName + "\r\nDllMethodName: " + xrec.DllMethodName);
+                    // Get user approval to run the external command
+                    if (GetExecutionApproval(ref xrec) == false) { return; };
+
+                    Logger.WriteLog("Loading DLL: " + xrec.Path + @"\" + xrec.Executable + "\r\nDllNameSpaceName.DllClassname: " + xrec.DllNamespaceName + "." + xrec.DllClassName + "\r\nDllMethodName: " + xrec.DllMethodName);
 
                     try
                     {
@@ -392,6 +396,9 @@ namespace ClipboardAccelerator
                 {
                     foreach (string sClipboardLine in saLinesToExecute)
                     {
+                        // Get user approval to run the external command
+                        if (GetExecutionApproval(ref xrec) == false) { return; };
+
                         Logger.WriteLog("Preparing ShellExecute for: " + sClipboardLine);
 
                         try
@@ -422,6 +429,10 @@ namespace ClipboardAccelerator
 
                 foreach (string sClipboardLine in saLinesToExecute)
                 {
+                    // Get user approval to run the external command
+                    if (GetExecutionApproval(ref xrec) == false) { return; };
+
+                    /* To delete
                     if (xrec.CommandIsSafe != "true")
                     {
                         if (cBNotifyExecution.IsChecked.Value)
@@ -429,7 +440,7 @@ namespace ClipboardAccelerator
                             MessageBoxResult result = MessageBox.Show("Do you want to run the external command with the following parameter:" + Environment.NewLine + Environment.NewLine + sClipboardLine, "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
                             if (result == MessageBoxResult.No) { return; }
                         }
-                    }                    
+                    }  */                   
 
                     string sAllArguments = "";                       
 
@@ -1027,6 +1038,22 @@ namespace ClipboardAccelerator
         private void bToClipboard_Click(object sender, RoutedEventArgs e)
         {
             Clipboard.SetText(tbClipboardContent.Text);
+        }
+
+
+        private bool GetExecutionApproval(ref XMLRecord xrec)
+        {
+            if (xrec.CommandIsSafe != "true")
+            {
+                if (cBNotifyExecution.IsChecked.Value)
+                {
+                    // TODO: add note to the message that the command might receive all lines through the pipe
+                    MessageBoxResult result = MessageBox.Show("Do you want to run the following external command:" + Environment.NewLine + Environment.NewLine + xrec.Path + @"\" + xrec.Executable + " [string N from the clipboard textbox]", "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    // + saLinesToExecute[0] + Environment.NewLine + "[+ following lines in the clipboard window]"
+                    if (result == MessageBoxResult.No) { return false; }
+                }
+            }
+            return true;
         }
     }
 }

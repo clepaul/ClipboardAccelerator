@@ -107,6 +107,13 @@ namespace ClipboardAccelerator
 
                     RecordCount++;
 
+                    // Set path relative to the programs executable if a DLL is the target and if the path is empty
+                    // Todo: Make the below "lib" directory path non-static and put it into the configuration
+                    if (IsDll == "true" && Path == "")
+                    {
+                        Path = AppDomain.CurrentDomain.BaseDirectory + "Lib";
+                    }
+
                     // Stop after the first "program" element
                     // TODO: implement logic to get the Nth element
                     break;
@@ -117,7 +124,6 @@ namespace ClipboardAccelerator
                     MessageBox.Show("XML file contains invalid data." + Environment.NewLine + "Failed at <program> element: " + ProgramID, "Error", MessageBoxButton.OK, MessageBoxImage.Error);                    
                     return;
                 }
-
             }
 
         }
