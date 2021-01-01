@@ -1,5 +1,5 @@
 ﻿/* This file is part of the source of "Clipboard Accelerator"
-Copyright (C) 2016 - 2020  Clemens Paul
+Copyright (C) 2016 - 2021  Clemens Paul
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

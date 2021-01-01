@@ -1,5 +1,5 @@
 ﻿/* Clipboard Accelerator - Executes commands with data from the clipboard
-Copyright (C) 2016 - 2020  Clemens Paul
+Copyright (C) 2016 - 2021  Clemens Paul
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -668,7 +668,7 @@ namespace ClipboardAccelerator
 
         private void buttonAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"Clipboard Accelerator v. {Assembly.GetExecutingAssembly().GetName().Version.ToString()} {Environment.NewLine}2016 - 2020, C. Paul {Environment.NewLine}{Environment.NewLine}License: https://www.gnu.org/licenses/gpl-3.0.txt {Environment.NewLine}",
+            MessageBox.Show($"Clipboard Accelerator v. {Assembly.GetExecutingAssembly().GetName().Version.ToString()} {Environment.NewLine}2016 - 2021, C. Paul {Environment.NewLine}{Environment.NewLine}License: https://www.gnu.org/licenses/gpl-3.0.txt {Environment.NewLine}",
                             "About",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
@@ -1045,12 +1045,25 @@ namespace ClipboardAccelerator
         {
             if (xrec.CommandIsSafe != "true")
             {
+                // TODO: add note to the message that the command might receive all lines through the pipe
                 if (cBNotifyExecution.IsChecked.Value)
                 {
-                    // TODO: add note to the message that the command might receive all lines through the pipe
-                    MessageBoxResult result = MessageBox.Show("Do you want to run the following external command:" + Environment.NewLine + Environment.NewLine + xrec.Path + @"\" + xrec.Executable + " [string N from the clipboard textbox]", "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    // + saLinesToExecute[0] + Environment.NewLine + "[+ following lines in the clipboard window]"
-                    if (result == MessageBoxResult.No) { return false; }
+                    if (xrec.ShellExecute == "true")
+                    {
+                        // TODO: Fix/replace the string placeholder with the actual string on the clipboard
+                        MessageBoxResult result = MessageBox.Show("Do you want to pass the following string to the shell for execution:" + Environment.NewLine + Environment.NewLine + xrec.AllArguments, "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (result == MessageBoxResult.No) { return false; }
+                    }
+                    else if(xrec.IsDll == "true")
+                    {
+                        MessageBoxResult result = MessageBox.Show("Do you want to load/run the following library to process the string(s) from the clipboard textbox:" + Environment.NewLine + Environment.NewLine + xrec.Path + @"\" + xrec.Executable, "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (result == MessageBoxResult.No) { return false; }
+                    }
+                    else
+                    {
+                        MessageBoxResult result = MessageBox.Show("Do you want to run the following external command:" + Environment.NewLine + Environment.NewLine + xrec.Path + @"\" + xrec.Executable + " [string from the clipboard textbox]", "Please confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (result == MessageBoxResult.No) { return false; }
+                    }
                 }
             }
             return true;
