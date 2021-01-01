@@ -37,7 +37,7 @@ namespace ClipboardAccelerator
         public string DllNamespaceName { get; private set; }
         public string DllClassName { get; private set; }
         public string DllMethodName { get; private set; }
-        public string DllConfigFilePath { get; private set; }
+        public string DllConfigFileName { get; private set; }
         // TODO: Create a public string var containing the path to the xml file using the below "sXmlPath" variable.
         //  This can be used later in the call to the DLL to get further configurations for the DLL functionality
 
@@ -92,7 +92,7 @@ namespace ClipboardAccelerator
                     DllNamespaceName = el.Element("DllNamespaceName") != null ? el.Element("DllNamespaceName").Value : "";
                     DllClassName = el.Element("DllClassName") != null ? el.Element("DllClassName").Value : "";
                     DllMethodName = el.Element("DllMethodName") != null ? el.Element("DllMethodName").Value : "";
-                    DllConfigFilePath = el.Element("DllConfigFilePath") != null ? el.Element("DllConfigFilePath").Value : "";
+                    DllConfigFileName = el.Element("DllConfigFileName") != null ? el.Element("DllConfigFileName").Value : "";
                     ProgramID = el.Attribute("id") != null ? el.Attribute("id").Value : "Invalid <program> element";
 
                     
@@ -107,12 +107,15 @@ namespace ClipboardAccelerator
 
                     RecordCount++;
 
-                    // Set path relative to the programs executable if a DLL is the target and if the path is empty
+                    // Set path relative to the programs executable if the path is empty
                     // Todo: Make the below "lib" directory path non-static and put it into the configuration
-                    if (IsDll == "true" && Path == "")
+                    if (Path == "")
                     {
-                        Path = AppDomain.CurrentDomain.BaseDirectory + "Lib";
+                        Path = AppDomain.CurrentDomain.BaseDirectory + "lib";
                     }
+
+                    DllConfigFileName = $"{Path}\\{DllConfigFileName}";
+
 
                     // Stop after the first "program" element
                     // TODO: implement logic to get the Nth element

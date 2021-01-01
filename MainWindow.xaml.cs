@@ -376,7 +376,7 @@ namespace ClipboardAccelerator
                         var theType = DLL.GetType(xrec.DllNamespaceName + "." + xrec.DllClassName);
                         var c = Activator.CreateInstance(theType);
                         var method = theType.GetMethod(xrec.DllMethodName);
-                        method.Invoke(c, new object[] { saLinesToExecute, xrec.DllConfigFilePath });
+                        method.Invoke(c, new object[] { saLinesToExecute, xrec.DllConfigFileName });                        
                     }
                     catch (Exception ex)
                     {
