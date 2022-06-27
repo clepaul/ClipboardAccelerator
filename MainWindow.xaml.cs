@@ -558,7 +558,7 @@ namespace ClipboardAccelerator
             }
 
             // Populate listBoxCommands with the file information
-            listBoxCommands.ItemsSource = FileItems;            
+            listBoxCommands.ItemsSource = FileItems;
         }
 
         
@@ -961,11 +961,20 @@ namespace ClipboardAccelerator
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             // Check if the selected file is an XML file
-            if (((listBoxCommands.SelectedItem as FileItem).FileExt).ToLower() != ".xml")
+            try
             {
-                MessageBox.Show("Only XML files support pre-defined optional arguments.", "", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }    
+                if (((listBoxCommands.SelectedItem as FileItem).FileExt).ToLower() != ".xml")
+                {
+                    MessageBox.Show("Only XML files support pre-defined optional arguments.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                // No item in the listbox selected, leave method... 
+                return;                
+            }
+                
 
             // Get the path to the selected file
             string sXmlBatFile = AppDomain.CurrentDomain.BaseDirectory + @"Tools\" + (listBoxCommands.SelectedItem as FileItem).FileName + (listBoxCommands.SelectedItem as FileItem).FileExt;

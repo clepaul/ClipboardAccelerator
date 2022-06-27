@@ -1,0 +1,18 @@
+<ExternalProgram>
+
+    <program id="1">
+        <class>Computer</class>
+        <description>Search AD using a DLL</description>
+        <issafe>true</issafe>
+        <executable>ADObjectSearcher.dll</executable>
+        <path></path>
+	<staticarg></staticarg>
+	<usepipe>false</usepipe>
+	<isdll>true</isdll>
+	<DllNamespaceName>ADObjectSearcher</DllNamespaceName>
+	<DllClassName>ADSearcherLib</DllClassName>
+	<DllMethodName>DLLEntry</DllMethodName>
+	<DllConfigFileName></DllConfigFileName>
+    </program>
+
+</ExternalProgram>

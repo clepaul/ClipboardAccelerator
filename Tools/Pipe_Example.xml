@@ -1,0 +1,14 @@
+<ExternalProgram>
+
+   <program id="1">
+        <class>File</class>
+        <description>Pipe example</description>
+	<usepipe>true</usepipe>
+	<issafe>false</issafe>
+        <executable>powershell.exe</executable>
+        <path>C:\Windows\SysWOW64\WindowsPowerShell\v1.0</path>
+        <staticarg>-ExecutionPolicy Unrestricted -NoExit -File .\lib\PipeReader_Example.ps1 -Pipename %%pn** -OptArg &quot;%%oa**&quot;</staticarg>
+    </program>
+
+</ExternalProgram>
+

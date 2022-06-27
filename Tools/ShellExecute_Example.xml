@@ -1,0 +1,15 @@
+<ExternalProgram>
+
+    <program id="1">
+        <class>Computer or any other for the regex match</class>
+        <description>ShellExecute example</description> 
+        <issafe>false</issafe>
+        <executable></executable>
+        <path></path>
+        <usepipe>false</usepipe>
+	<staticarg>https://dict.leo.org/englisch-deutsch/%%ca**</staticarg> 
+	<isdll>false</isdll>
+	<ShellExecute>true</ShellExecute>
+    </program>
+
+</ExternalProgram>

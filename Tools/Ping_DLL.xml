@@ -1,0 +1,18 @@
+<ExternalProgram>
+
+    <program id="1">
+        <class>Computer</class>
+        <description>Ping using a DLL</description>
+        <issafe>false</issafe>
+        <executable>CA-DLLTest.dll</executable>
+        <path></path>
+	<staticarg></staticarg>
+	<usepipe>false</usepipe>
+	<isdll>true</isdll>
+	<DllNamespaceName>CA_DLLTest</DllNamespaceName>
+	<DllClassName>DLLTest</DllClassName>
+	<DllMethodName>DLLEntry</DllMethodName>
+	<DllConfigFileName>CA-DLLTest-Config.xml</DllConfigFileName>
+    </program>
+
+</ExternalProgram>

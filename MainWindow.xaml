@@ -15,10 +15,21 @@
         <GridSplitter Grid.Column="0" Width="3"/>
 
         <ListBox x:Name="listBoxCommands" HorizontalContentAlignment="Stretch" Margin="10,10,8,10" FontSize="21.333" Initialized="listBoxCommands_Initialized" Background="White" Grid.Column="0" ScrollViewer.CanContentScroll="True" BorderThickness="1" FontWeight="Bold" FontFamily="Consolas" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <!-- Define the context menu for the actual item in the listbox -->
+            <!-- Source: https://stackoverflow.com/questions/62692093/context-menu-only-for-items-in-the-listbox -->
+            <ListBox.Resources>
+                <ContextMenu x:Key="MyElementMenu">
+                    <MenuItem Header="Optional Arguments" Click="MenuItem_Click"></MenuItem>
+                    <MenuItem Header="Browse Tools" Click="bBrowseToolsFolder_Click"></MenuItem>
+                    <MenuItem Header="Refresh Tools" Click="bRefreshTools_Click"></MenuItem>
+                </ContextMenu>
+            </ListBox.Resources>
+
             <!-- ItemContainerStyle is required to set the DoubleClick EventSetter for a single listbox item instead of setting it for the whole listbox -->
             <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
+                <Style TargetType="{x:Type ListBoxItem}">
                     <EventSetter Event="MouseDoubleClick" Handler="listBoxCommands_MouseDoubleClick"/>
+                    <Setter Property="ContextMenu" Value="{StaticResource MyElementMenu}"/>
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
@@ -36,28 +47,15 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+            <!-- This context menu is for blank regions of the listbox -->
             <ListBox.ContextMenu>
                 <ContextMenu Name="lbContextMenu">
                     <MenuItem Header="Browse Tools" Click="bBrowseToolsFolder_Click"></MenuItem>
                     <MenuItem Header="Refresh Tools" Click="bRefreshTools_Click"></MenuItem>
                 </ContextMenu>
             </ListBox.ContextMenu>
-
-            <!--Define context menu for the single listbox items. Source: http://stackoverflow.com/questions/9549231/how-to-right-click-on-item-from-listbox-and-open-menu-on-wpf -->
-            <ListBox.Resources>
-                <!--Defines a context menu-->
-                <ContextMenu x:Key="MyElementMenu">
-                    <MenuItem Header="Optional Arguments" Click="MenuItem_Click" />
-                    <MenuItem Header="Browse Tools" Click="bBrowseToolsFolder_Click"></MenuItem>
-                    <MenuItem Header="Refresh Tools" Click="bRefreshTools_Click"></MenuItem>
-                </ContextMenu>
-
-                <!--Sets a context menu for each ListBoxItem in the current ListBox-->
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="ContextMenu" Value="{StaticResource MyElementMenu}"/>
-                </Style>
-            </ListBox.Resources>
-
+            
         </ListBox>
 
         <TextBox x:Name="tbClipboardContent" Margin="10,211,10,38" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" FontSize="18" TextChanged="tbClipboardContent_TextChanged" FontFamily="Consolas" Grid.Column="1"/>
